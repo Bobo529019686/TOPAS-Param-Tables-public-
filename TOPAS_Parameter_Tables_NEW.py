@@ -85,11 +85,14 @@ def cryst_round(parm,mean_err):
 	# set mean_round
 	mean_round = Decimal(mean_cut)
 	
-	# second round for digits higher 20
-	if int(bracket) > 20:
+	# second round for digits no less than 20
+	if int(bracket) >= 20:
 		bracket = '0.'+bracket
 		bracket = '{:.1f}'.format(Decimal(bracket))
-		bracket = bracket[-1]
+		if float(bracket) == 1: # for the errors between 0.95 and 0.99, because they will be rounded to 1.0 after formating with one decimal
+			bracket = 10
+		else:
+			bracket = bracket[-1] # for the errors between 0.20 and 0.94
 		# print('3. Optional second cut and round of error: {}'.format(bracket))
 		
 		mean_round = str(Decimal(mean_cut))
